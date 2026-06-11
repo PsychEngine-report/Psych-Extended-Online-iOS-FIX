@@ -102,14 +102,17 @@ class Main extends Sprite
 		super();
 		#if mobile
 		#if android
-		StorageUtil.initExternalStorageDirectory(); //do not make this jobs everytime
+		StorageUtil.initExternalStorageDirectory();
 		StorageUtil.requestPermissions();
 		StorageUtil.chmod(2777, AndroidContext.getExternalFilesDir() + '/mods');
 		StorageUtil.chmod(2777, AndroidContext.getExternalFilesDir() + '/replays');
-		StorageUtil.chmod(2777, AndroidContext.getExternalFilesDir() + '/core'); //allow ability to change core files of engine (saveData)
+		StorageUtil.chmod(2777, AndroidContext.getExternalFilesDir() + '/core');
 		StorageUtil.copySpesificFileFromAssets('mobile/storageModes.txt', StorageUtil.getCustomStoragePath());
-		#end
 		Sys.setCwd(StorageUtil.getStorageDirectory());
+		#end
+		#if ios
+		StorageUtil.getStorageDirectory();
+		#end
 		#end
 		backend.CrashHandler.init();
 
