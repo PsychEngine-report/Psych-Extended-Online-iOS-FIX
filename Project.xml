@@ -275,6 +275,9 @@
 		<haxedef name="lime_disable_motion_sensors" />
 	</section>
 
+	<!-- Allow Write Access to EXTERNAL_DATA Directory -->
+	<haxedef name="SHARE_MOBILE_FILES" if="ios" />
+
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 
 	<assets path='art/iconOG.png' rename='icon.png' if="linux" />
