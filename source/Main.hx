@@ -111,6 +111,7 @@ class Main extends Sprite
 		Sys.setCwd(StorageUtil.getStorageDirectory());
 		#end
 		#if ios
+		StorageUtil.initExternalStorageDirectory();
 		StorageUtil.getStorageDirectory();
 		#end
 		#end
