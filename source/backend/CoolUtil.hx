@@ -387,25 +387,33 @@ class CoolUtil
 	public static function showPopUp(message:String, title:String):Void
 	{
 		#if ios
-		// We execute raw Objective-C / C++ code directly into the compiled Xcode project
 		untyped __cpp__('
-			UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithUTF8String:{0}.c_str()]
-                                                                           message:[NSString stringWithUTF8String:{1}.c_str()]
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
+		#if defined(__OBJC__)
+		#import <UIKit/UIKit.h>
 
-			UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                                  handler:nil];
+		NSString* objcTitle = [NSString stringWithUTF8String:{0}.c_str()];
+		NSString* objcMessage = [NSString stringWithUTF8String:{1}.c_str()];
 
-			[alert addAction:defaultAction];
+		UIAlertController* alert = [UIAlertController alertControllerWithTitle:objcTitle
+                                                                       message:objcMessage
+                                                                preferredStyle:UIAlertControllerStyleAlert];
 
-			UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-			
-			while (rootViewController.presentedViewController) {
-				rootViewController = rootViewController.presentedViewController;
-			}
+		UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" 
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:nil];
+		[alert addAction:defaultAction];
 
-			[rootViewController presentViewController:alert animated:YES completion:nil];
-		', title, message);
+		UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+		
+		while (rootViewController.presentedViewController) {
+			rootViewController = rootViewController.presentedViewController;
+		}
+
+		[rootViewController presentViewController:alert animated:YES completion:nil];
+		#else
+		printf("POPUPALERT: [%s] %s\\n", {0}.c_str(), {1}.c_str());
+		#endif
+	', title, message);
 		#else
 		FlxG.stage.window.alert(message, title);
 		#end
