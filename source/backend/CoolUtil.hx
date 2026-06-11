@@ -12,6 +12,10 @@ import sys.io.File;
 import sys.FileSystem;
 #end
 
+#if ios
+import cpp.Pointer;
+#end
+
 import flixel.animation.FlxAnimation;
 import haxe.xml.Access;
 
@@ -382,7 +386,29 @@ class CoolUtil
 
 	public static function showPopUp(message:String, title:String):Void
 	{
+		#if ios
+		// We execute raw Objective-C / C++ code directly into the compiled Xcode project
+		untyped __cpp__('
+			UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithUTF8String:{0}.c_str()]
+                                                                           message:[NSString stringWithUTF8String:{1}.c_str()]
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+
+			UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                                  handler:nil];
+
+			[alert addAction:defaultAction];
+
+			UIViewController* rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+			
+			while (rootViewController.presentedViewController) {
+				rootViewController = rootViewController.presentedViewController;
+			}
+
+			[rootViewController presentViewController:alert animated:YES completion:nil];
+		', title, message);
+		#else
 		FlxG.stage.window.alert(message, title);
+		#end
 	}
 
 	@:noUsing public static inline function getMacroAbstractClass(className:String) {
