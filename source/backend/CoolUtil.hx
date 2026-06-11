@@ -19,6 +19,9 @@ import cpp.Pointer;
 import flixel.animation.FlxAnimation;
 import haxe.xml.Access;
 
+#if ios
+@:cppFileCode('#import <UIKit/UIKit.h>')
+#end
 #if cpp
 @:cppFileCode('#include <thread>')
 #end
@@ -389,7 +392,6 @@ class CoolUtil
 		#if ios
 		untyped __cpp__('
 		#if defined(__OBJC__)
-		#import <UIKit/UIKit.h>
 
 		NSString* objcTitle = [NSString stringWithUTF8String:{0}.c_str()];
 		NSString* objcMessage = [NSString stringWithUTF8String:{1}.c_str()];
