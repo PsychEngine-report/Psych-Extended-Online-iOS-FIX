@@ -93,35 +93,36 @@ class StorageUtil
 		#end
 
 		#if mobile
+		var baseDir:String = Path.addTrailingSlash(StorageUtil.getStorageDirectory());
 		try
 		{
-			var baseDir:String = StorageUtil.getStorageDirectory();
 			if (!FileSystem.exists(baseDir))
 				FileSystem.createDirectory(baseDir);
 		}
 		catch (e:Dynamic)
 		{
-			CoolUtil.showPopUp('Please create directory to\n${StorageUtil.getStorageDirectory()}\nPress OK to close the game', "Error!");
+			CoolUtil.showPopUp('Please create directory to\n${baseDir}\nPress OK to close the game', "Error!");
 			lime.system.System.exit(1);
 		}
 
+		var extDir:String = Path.addTrailingSlash(StorageUtil.getExternalStorageDirectory());
 		try
 		{
-			var modsDir:String = StorageUtil.getExternalStorageDirectory() + '/mods';
+			var modsDir:String = extDir + 'mods';
 			if (!FileSystem.exists(modsDir))
 				FileSystem.createDirectory(modsDir);
 				
-			var replaysDir:String = StorageUtil.getExternalStorageDirectory() + '/replays';
+			var replaysDir:String = extDir + 'replays';
 			if (!FileSystem.exists(replaysDir))
 				FileSystem.createDirectory(replaysDir);
 
-			var coreDir:String = StorageUtil.getExternalStorageDirectory() + '/core';
+			var coreDir:String = extDir + 'core';
 			if (!FileSystem.exists(coreDir))
 				FileSystem.createDirectory(coreDir);
 		}
 		catch (e:Dynamic)
 		{
-			CoolUtil.showPopUp('Please create folder structures inside\n${StorageUtil.getExternalStorageDirectory()}\nPress OK to close the game', "Error!");
+			CoolUtil.showPopUp('Please create folder structures inside\n${extDir}\nPress OK to close the game', "Error!");
 			lime.system.System.exit(1);
 		}
 		#end
